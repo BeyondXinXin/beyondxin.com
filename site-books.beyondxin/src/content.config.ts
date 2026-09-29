@@ -1,8 +1,11 @@
 import { glob } from 'astro/loaders'
 import { defineCollection, z } from 'astro:content'
 
+// 直接读取根仓库的 MyNote 子模块，不再依赖 src/content/posts 符号链接
+// （该 symlink 未被 git 跟踪，CI checkout 后不存在）
+// 注意：base 相对于项目根（site-books.beyondxin），只需一层 ..
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/posts' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: '../MyNote/读书笔记' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),

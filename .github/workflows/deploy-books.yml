@@ -20,6 +20,11 @@ jobs:
       - name: Update submodules to latest remote commit
         run: |
           git submodule update --init --remote --recursive
+      - name: Check notes content
+        run: |
+          # content.config.ts 的 posts 直接读 MyNote 子模块，这里只做存在性校验
+          echo "md count: $(find MyNote/读书笔记 -name '*.md' | wc -l)"
+          test -n "$(find MyNote/读书笔记 -name '*.md' -print -quit)" || { echo "::error::MyNote has no markdown, abort"; exit 1; }
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
